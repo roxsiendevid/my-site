@@ -1,11 +1,779 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0; URL='https://lkis.cc/923d880e'" />
-    <title>Redirecting...</title>
-  </head>
-  <body>
-    <p>Redirecting...</p>
-  </body>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Успевай запрыгнуть в последний вагон 🚀</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            background: linear-gradient(180deg, #0c1445 0%, #1a237e 30%, #283593 70%, #3949ab 100%);
+        }
+
+        /* Зимний фон */
+        .winter-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .snow-hills {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(transparent 0%, rgba(255, 255, 255, 0.2) 100%);
+            border-radius: 50% 50% 0 0;
+        }
+
+        .snow-hills::before,
+        .snow-hills::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50% 50% 0 0;
+        }
+
+        .snow-hills::before {
+            left: 10%;
+            width: 300px;
+        }
+
+        .snow-hills::after {
+            right: 15%;
+            width: 250px;
+        }
+
+        /* Снежинки */
+        .snowflake {
+            position: absolute;
+            top: -20px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            filter: blur(0.5px);
+        }
+
+        /* Облака */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            filter: blur(5px);
+        }
+
+        .cloud-1 {
+            top: 10%;
+            left: 5%;
+            width: 120px;
+            height: 40px;
+        }
+
+        .cloud-2 {
+            top: 20%;
+            right: 10%;
+            width: 150px;
+            height: 50px;
+        }
+
+        .cloud-3 {
+            top: 30%;
+            left: 15%;
+            width: 100px;
+            height: 35px;
+        }
+
+        /* Основной контент */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .fire-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(90deg, #ff6b00, #ffa500);
+            color: #000;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .fire-icon {
+            margin-right: 6px;
+            font-size: 16px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: white;
+            text-shadow: 0 0 30px rgba(170, 213, 255, 0.3);
+            position: relative;
+        }
+
+        /* Эмодзи ракеты - БЕЗ размытия */
+        .rocket-emoji {
+            display: inline-block;
+            font-style: normal;
+            margin-left: 10px;
+            animation: rocketFloat 3s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes rocketFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-5px) rotate(-5deg);
+            }
+            75% {
+                transform: translateY(5px) rotate(5deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #c8e6ff;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .timer-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 120px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+
+        .timer-value {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(to bottom, #fff, #aad5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(170, 213, 255, 0.5);
+            line-height: 1;
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            color: #aad5ff;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .timer-value {
+                font-size: 2.8rem;
+            }
+            
+            .timer-unit {
+                min-width: 80px;
+                padding: 15px;
+            }
+            
+            .timer {
+                gap: 15px;
+            }
+        }
+
+        /* Кнопка с эмодзи ракеты */
+        .telegram-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(90deg, #0088cc, #34aadc);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 20px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.4);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .telegram-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .telegram-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 136, 204, 0.6);
+            background: linear-gradient(90deg, #34aadc, #0088cc);
+        }
+
+        .telegram-button:hover::before {
+            left: 100%;
+        }
+
+        .button-emoji {
+            font-size: 1.5rem;
+            animation: buttonRocket 2s ease-in-out infinite;
+        }
+
+        @keyframes buttonRocket {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-3px) rotate(10deg);
+            }
+        }
+
+        .deadline-note {
+            color: #aad5ff;
+            font-size: 0.9rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Снежинки вокруг контента */
+        .snow-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .snow-decoration span {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.7;
+            filter: blur(1px);
+            animation: floatSnow 15s infinite linear;
+        }
+
+        @keyframes floatSnow {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Звезды */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Зимний фон -->
+    <div class="winter-background">
+        <div class="snow-hills"></div>
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
+
+    <!-- Звезды -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Снежинки вокруг контента -->
+    <div class="snow-decoration" id="snowDecoration"></div>
+    
+    <!-- Основной контент -->
+    <div class="container">
+        <div class="header">
+            <div class="fire-badge">
+                <span class="fire-icon">🔥</span>
+                Сейчас реально хайпует
+            </div>
+            
+            <h1>Успевай запрыгнуть в последний вагон <span class="rocket-emoji">🚀</span></h1>
+            
+            <p class="subtitle">
+                Пока все только заходят — ты можешь оказаться впереди. Нажми кнопку и забирай доступ.
+            </p>
+        </div>
+        
+        <div class="timer">
+            <div class="timer-unit">
+                <div class="timer-value" id="days">01</div>
+                <div class="timer-label">дни</div>
+            </div>
+            
+            <div class="timer-unit">
+                <div class="timer-value" id="hours">23</div>
+                <div class="timer-label">часы</div>
+            </div>
+            
+            <div class="timer-unit">
+                <div class="timer-value" id="minutes">59</div>
+                <div class="timer-label">мин</div>
+            </div>
+            
+            <div class="timer-unit">
+                <div class="timer-value" id="seconds">59</div>
+                <div class="timer-label">сек</div>
+            </div>
+        </div>
+        
+        <a href="https://t.me/+q0gR0HYJFRQ1ZDgy" class="telegram-button" target="_blank" rel="noopener noreferrer" id="telegramButton">
+            <span class="button-emoji">🚀</span>
+            Играть в Telegram
+        </a>
+        
+        <p class="deadline-note">Avia Masters</p>
+    </div>
+
+    <script>
+        // Система ежедневного сброса таймера (без уведомлений)
+        class DailyTimer {
+            constructor() {
+                // Инициализация
+                this.timerElements = {
+                    days: document.getElementById('days'),
+                    hours: document.getElementById('hours'),
+                    minutes: document.getElementById('minutes'),
+                    seconds: document.getElementById('seconds')
+                };
+                
+                this.lastResetDate = this.getStoredResetDate();
+                this.initializeTimer();
+            }
+            
+            // Получить сохраненную дату сброса из localStorage
+            getStoredResetDate() {
+                const stored = localStorage.getItem('dailyTimerResetDate');
+                if (stored) {
+                    return new Date(stored);
+                }
+                return null;
+            }
+            
+            // Сохранить дату сброса в localStorage
+            storeResetDate(date) {
+                localStorage.setItem('dailyTimerResetDate', date.toISOString());
+                localStorage.setItem('dailyTimerLastValue', JSON.stringify({
+                    days: 0,
+                    hours: 23,
+                    minutes: 59,
+                    seconds: 59
+                }));
+            }
+            
+            // Проверить, нужно ли сбросить таймер
+            shouldResetTimer() {
+                const now = new Date();
+                
+                // Если нет сохраненной даты или прошло больше 24 часов
+                if (!this.lastResetDate) {
+                    return true;
+                }
+                
+                const diffInHours = (now - this.lastResetDate) / (1000 * 60 * 60);
+                return diffInHours >= 24;
+            }
+            
+            // Сбросить таймер (без уведомлений)
+            resetTimer() {
+                const now = new Date();
+                this.lastResetDate = now;
+                this.storeResetDate(now);
+                
+                // Без анимации - просто запускаем новый таймер
+                this.startDailyCountdown();
+            }
+            
+            // Запустить ежедневный обратный отсчет
+            startDailyCountdown() {
+                // Устанавливаем таймер на 23 часа 59 минут 59 секунд
+                let timeRemaining = 23 * 60 * 60 + 59 * 60 + 59;
+                
+                const update = () => {
+                    if (timeRemaining <= 0) {
+                        // Когда таймер достигает 0, сбрасываем его тихо
+                        this.resetTimer();
+                        return;
+                    }
+                    
+                    timeRemaining--;
+                    
+                    const hours = Math.floor(timeRemaining / 3600);
+                    const minutes = Math.floor((timeRemaining % 3600) / 60);
+                    const seconds = timeRemaining % 60;
+                    
+                    // Всегда показываем 1 день
+                    this.timerElements.days.textContent = '01';
+                    this.timerElements.hours.textContent = hours.toString().padStart(2, '0');
+                    this.timerElements.minutes.textContent = minutes.toString().padStart(2, '0');
+                    this.timerElements.seconds.textContent = seconds.toString().padStart(2, '0');
+                };
+                
+                // Обновляем сразу и затем каждую секунду
+                update();
+                setInterval(update, 1000);
+            }
+            
+            // Инициализировать таймер
+            initializeTimer() {
+                if (this.shouldResetTimer()) {
+                    // Если нужно сбросить, устанавливаем новый таймер
+                    this.resetTimer();
+                } else {
+                    // Иначе продолжаем с того места, где остановились
+                    const lastValue = JSON.parse(localStorage.getItem('dailyTimerLastValue') || '{"days":0,"hours":23,"minutes":59,"seconds":59}');
+                    
+                    // Рассчитываем оставшееся время с момента последнего сохранения
+                    const now = new Date();
+                    const timeSinceLastSave = Math.floor((now - this.lastResetDate) / 1000);
+                    
+                    let totalSeconds = lastValue.hours * 3600 + lastValue.minutes * 60 + lastValue.seconds;
+                    totalSeconds = Math.max(0, totalSeconds - timeSinceLastSave);
+                    
+                    if (totalSeconds <= 0) {
+                        // Если время истекло, сбрасываем тихо
+                        this.resetTimer();
+                    } else {
+                        const hours = Math.floor(totalSeconds / 3600);
+                        const minutes = Math.floor((totalSeconds % 3600) / 60);
+                        const seconds = totalSeconds % 60;
+                        
+                        this.timerElements.days.textContent = '01';
+                        this.timerElements.hours.textContent = hours.toString().padStart(2, '0');
+                        this.timerElements.minutes.textContent = minutes.toString().padStart(2, '0');
+                        this.timerElements.seconds.textContent = seconds.toString().padStart(2, '0');
+                        
+                        // Запускаем обратный отсчет с текущего значения
+                        this.startCountdownFrom(totalSeconds);
+                    }
+                }
+            }
+            
+            // Запустить обратный отсчет с определенного количества секунд
+            startCountdownFrom(initialSeconds) {
+                let timeRemaining = initialSeconds;
+                
+                const update = () => {
+                    if (timeRemaining <= 0) {
+                        // Сбрасываем без уведомлений
+                        this.resetTimer();
+                        return;
+                    }
+                    
+                    timeRemaining--;
+                    
+                    const hours = Math.floor(timeRemaining / 3600);
+                    const minutes = Math.floor((timeRemaining % 3600) / 60);
+                    const seconds = timeRemaining % 60;
+                    
+                    this.timerElements.days.textContent = '01';
+                    this.timerElements.hours.textContent = hours.toString().padStart(2, '0');
+                    this.timerElements.minutes.textContent = minutes.toString().padStart(2, '0');
+                    this.timerElements.seconds.textContent = seconds.toString().padStart(2, '0');
+                    
+                    // Сохраняем текущее состояние каждые 30 секунд
+                    if (timeRemaining % 30 === 0) {
+                        localStorage.setItem('dailyTimerLastValue', JSON.stringify({
+                            days: 0,
+                            hours: hours,
+                            minutes: minutes,
+                            seconds: seconds
+                        }));
+                    }
+                };
+                
+                update();
+                setInterval(update, 1000);
+            }
+        }
+
+        // Создаем снегопад
+        function createSnowfall() {
+            const winterBg = document.querySelector('.winter-background');
+            
+            // Создаем снежинки для фона
+            for (let i = 0; i < 80; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                const size = Math.random() * 6 + 2;
+                const posX = Math.random() * 100;
+                const duration = Math.random() * 10 + 10;
+                const delay = Math.random() * 20;
+                const opacity = Math.random() * 0.8 + 0.2;
+                
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                snowflake.style.left = `${posX}vw`;
+                snowflake.style.opacity = opacity;
+                snowflake.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+                
+                winterBg.appendChild(snowflake);
+            }
+            
+            // Добавляем стили для анимации падения снежинок
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fall {
+                    0% {
+                        transform: translateY(-20px) translateX(0) rotate(0deg);
+                        opacity: 0;
+                    }
+                    10% {
+                        opacity: 0.8;
+                        transform: translateX(${Math.random() * 20 - 10}px);
+                    }
+                    90% {
+                        opacity: 0.8;
+                    }
+                    100% {
+                        transform: translateY(100vh) translateX(${Math.random() * 40 - 20}px) rotate(360deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Создаем снежинки вокруг контента
+        function createSnowDecoration() {
+            const decoration = document.getElementById('snowDecoration');
+            
+            for (let i = 0; i < 30; i++) {
+                const snow = document.createElement('span');
+                
+                const size = Math.random() * 8 + 3;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const duration = Math.random() * 10 + 15;
+                const delay = Math.random() * 20;
+                const opacity = Math.random() * 0.7 + 0.3;
+                
+                snow.style.width = `${size}px`;
+                snow.style.height = `${size}px`;
+                snow.style.left = `${posX}%`;
+                snow.style.top = `${posY}%`;
+                snow.style.opacity = opacity;
+                snow.style.animationDelay = `${delay}s`;
+                snow.style.animationDuration = `${duration}s`;
+                
+                decoration.appendChild(snow);
+            }
+        }
+
+        // Создаем звезды
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                const size = Math.random() * 3 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const duration = Math.random() * 4 + 2;
+                const delay = Math.random() * 5;
+                
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${posX}vw`;
+                star.style.top = `${posY}vh`;
+                star.style.animationDuration = `${duration}s`;
+                star.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Анимация для кнопки Telegram
+        function addTelegramButtonAnimation() {
+            const telegramButton = document.getElementById('telegramButton');
+            const buttonRocket = telegramButton.querySelector('.button-emoji');
+            const headerRocket = document.querySelector('.rocket-emoji');
+            
+            // Анимация ракеты на кнопке при наведении
+            telegramButton.addEventListener('mouseenter', function() {
+                buttonRocket.style.animation = 'buttonRocket 0.3s ease-in-out infinite';
+                headerRocket.style.animation = 'rocketFloat 0.5s ease-in-out infinite';
+                headerRocket.style.transform = 'scale(1.2)';
+            });
+            
+            telegramButton.addEventListener('mouseleave', function() {
+                buttonRocket.style.animation = 'buttonRocket 2s ease-in-out infinite';
+                headerRocket.style.animation = 'rocketFloat 3s ease-in-out infinite';
+                headerRocket.style.transform = 'scale(1)';
+            });
+            
+            // Эффект взлета при клике
+            telegramButton.addEventListener('click', function(e) {
+                // Не прерываем переход по ссылке
+                // Просто добавляем эффект взлета
+                
+                // Эффект для ракеты в заголовке
+                headerRocket.style.transition = 'all 0.5s ease-out';
+                headerRocket.style.transform = 'translateY(-100px) rotate(45deg) scale(1.5)';
+                headerRocket.style.opacity = '0';
+                
+                // Эффект для ракеты на кнопке
+                buttonRocket.style.transition = 'all 0.5s ease-out';
+                buttonRocket.style.transform = 'translateY(-100px) rotate(45deg) scale(1.5)';
+                buttonRocket.style.opacity = '0';
+                
+                // Восстановление через 1 секунду
+                setTimeout(() => {
+                    headerRocket.style.transition = 'none';
+                    headerRocket.style.transform = 'translateY(0) rotate(0deg) scale(1)';
+                    headerRocket.style.opacity = '1';
+                    
+                    buttonRocket.style.transition = 'none';
+                    buttonRocket.style.transform = 'translateY(0) rotate(0deg) scale(1)';
+                    buttonRocket.style.opacity = '1';
+                    
+                    // Возвращаем переход через небольшой интервал
+                    setTimeout(() => {
+                        headerRocket.style.transition = 'all 0.3s ease';
+                        buttonRocket.style.transition = 'all 0.3s ease';
+                    }, 50);
+                }, 500);
+            });
+        }
+
+        // Инициализируем все элементы
+        createSnowfall();
+        createSnowDecoration();
+        createStars();
+        addTelegramButtonAnimation();
+        
+        // Инициализируем ежедневный таймер (без уведомлений о сбросе)
+        const dailyTimer = new DailyTimer();
+
+        // Добавляем немного интерактивности - снег при движении мыши
+        document.addEventListener('mousemove', function(e) {
+            const snowDecoration = document.getElementById('snowDecoration');
+            const snowflakes = snowDecoration.querySelectorAll('span');
+            
+            snowflakes.forEach((flake, index) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                // Легкое движение снежинок в сторону курсора
+                const moveX = (x - 0.5) * 5;
+                const moveY = (y - 0.5) * 5;
+                
+                flake.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+    </script>
+</body>
 </html>
